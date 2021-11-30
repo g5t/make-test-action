@@ -5,6 +5,10 @@ inputs:
     description: "CMake build specification"
     required: true
     default: 'Release'
+  flags:
+    description: "Extra CMake configure flags"
+    required: false
+    default: ''
 outputs:
   test-status:
     description: "Output status of CTest"
@@ -16,7 +20,7 @@ runs:
 
   - name: configure
     shell: bash
-    run: cmake -S . -B build -D CMAKE_BUILD_TYPE=${{ inputs.build }}
+    run: cmake -S . -B build -D CMAKE_BUILD_TYPE=${{ inputs.build }} ${{ inputs.flags }}
 
   - name: build
     shell: bash
