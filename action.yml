@@ -33,5 +33,5 @@ runs:
         RESULT_VARIABLE result
       )
       if (NOT result EQUAL 0)
-        message(FATAL_ERROR "${{ input.build }} tests failed")
+        message(FATAL_ERROR "${{ inputs.build }} tests failed")
       endif()
