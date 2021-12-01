@@ -5,6 +5,10 @@ inputs:
     description: "CMake build specification"
     required: true
     default: 'Release'
+  dir:
+    description: "CMake build directory"
+    required: false
+    default: 'build'
   flags:
     description: "Extra CMake configure flags"
     required: false
@@ -20,11 +24,11 @@ runs:
 
   - name: configure
     shell: bash
-    run: cmake -S . -B build -D CMAKE_BUILD_TYPE=${{ inputs.build }} ${{ inputs.flags }}
+    run: cmake -S . -B ${{ inputs.dir }} -D CMAKE_BUILD_TYPE=${{ inputs.build }} ${{ inputs.flags }}
 
   - name: build
     shell: bash
-    run: cmake --build build --config ${{ inputs.build }}
+    run: cmake --build ${{ inputs.dir }} --config ${{ inputs.build }}
 
   - name: test
     shell: cmake -P {0}
@@ -33,7 +37,7 @@ runs:
       ProcessorCount(N)
       execute_process(
         COMMAND ctest -j ${N} -C ${{ inputs.build }} --output-on-failure
-        WORKING_DIRECTORY build
+        WORKING_DIRECTORY ${{ inputs.dir }}
         RESULT_VARIABLE result
       )
       if (NOT result EQUAL 0)
